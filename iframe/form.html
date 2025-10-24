@@ -36,12 +36,29 @@
   </form>
 
   <script>
-    document.getElementById("emailForm").addEventListener("submit", e => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      console.log("Form gönderildi:", email);
-      alert("Teşekkürler! " + email);
-    });
-  </script>
+  document.getElementById("emailForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+
+    try {
+      const res = await fetch("https://ceollm.com/collect", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "email=" + encodeURIComponent(email),
+        referrer: "https://hepiyiler.com"
+      });
+
+      if (res.ok) {
+        alert("Teşekkürler! " + email);
+      } else {
+        alert("Gönderilemedi: " + res.status);
+      }
+    } catch (err) {
+      alert("Bağlantı hatası");
+      console.error(err);
+    }
+  });
+</script>
+
 </body>
 </html>
